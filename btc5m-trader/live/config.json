@@ -1,0 +1,90 @@
+{
+  "paused": false,
+  "armed": true,
+  "entry_second": 25,
+  "gap_threshold": 20,
+  "min_buy_price": 0.95,
+  "bet_fraction": 0.0,
+  "max_live_amount": 1.0,
+  "withdraw_mode": "none",
+  "max_consecutive_losses": 1,
+  "cooldown_seconds": 0,
+  "initial_capital": 2.44,
+  "active_strategy": "3",
+  "executor": "backend_deposit_wallet",
+  "live_order_type": "FAK",
+  "mode": "live",
+  "bet_mode": "fixed_amount",
+  "fixed_bet_amount": 1.0,
+  "strategies": {
+    "1": {
+      "name": "Strategy 1 (Old default)",
+      "win_rate": 95.4,
+      "params": {
+        "entry_second": 25,
+        "gap_threshold": 15,
+        "min_buy_price": 0.6,
+        "bet_fraction": 0.5,
+        "cooldown_seconds": 0
+      },
+      "description": "Old base strategy, kept only for comparison. Not recommended as the first live strategy."
+    },
+    "2": {
+      "name": "Strategy 2 (Early extreme momentum)",
+      "win_rate": 100.0,
+      "params": {
+        "entry_second": 120,
+        "gap_threshold": 120,
+        "min_buy_price": 0.7,
+        "bet_fraction": 0.5,
+        "cooldown_seconds": 0
+      },
+      "description": "Uses the T120 large-gap signal as an early momentum observation strategy. Backtest sample is small; do not use as the small live main strategy yet."
+    },
+    "3": {
+      "name": "Recommended: T25 P95 gap20 fixed $1",
+      "win_rate": 99.26,
+      "backtest_date": "2026-06-03",
+      "params": {
+        "entry_second": 25,
+        "gap_threshold": 20,
+        "min_buy_price": 0.95,
+        "bet_mode": "fixed_amount",
+        "fixed_bet_amount": 1.0,
+        "bet_fraction": 0.0,
+        "cooldown_seconds": 0
+      },
+      "description": "Currently the most promising conservative strategy for small live validation: within T25, buy probability 95%-99%, buy gap >= 20, fixed $1. After merging the old and new simulation streams and filtering, 269 trades: 267 wins, 2 losses; fixed $1 stakes scaled $10 to about $13.17, max drawdown about -$1.88; still not a profit guarantee. Live trading must be checked for fill rate and slippage."
+    },
+    "4": {
+      "name": "Observation: T25 P95 gap0 fixed $1",
+      "win_rate": 98.84,
+      "backtest_date": "2026-06-02",
+      "params": {
+        "entry_second": 25,
+        "gap_threshold": 0,
+        "min_buy_price": 0.95,
+        "bet_mode": "fixed_amount",
+        "fixed_bet_amount": 1.0,
+        "bet_fraction": 0.0,
+        "cooldown_seconds": 0
+      },
+      "description": "Higher-opportunity high-probability comparison strategy: within T25, probability >= 95%, no buy-gap requirement. Old simulation signals: about 259 trades, 256 wins, 3 losses. Slightly lower returns and more exposed to small-gap reversals; not the first live strategy yet."
+    },
+    "5": {
+      "name": "Aggressive observation: T25 P95 10% fraction",
+      "win_rate": 98.84,
+      "backtest_date": "2026-06-02",
+      "params": {
+        "entry_second": 25,
+        "gap_threshold": 0,
+        "min_buy_price": 0.95,
+        "bet_mode": "fraction",
+        "fixed_bet_amount": 1.0,
+        "bet_fraction": 0.1,
+        "cooldown_seconds": 0
+      },
+      "description": "Same P95 signals but staking 10% of balance. Backtest returns are slightly higher but drawdowns are larger; small balances are limited by the $1 minimum stake. Observation only before live trading; do not enable now."
+    }
+  }
+}

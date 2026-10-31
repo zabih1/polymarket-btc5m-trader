@@ -1,0 +1,10 @@
+.env
+data/
+__pycache__/
+*.pyc
+*.log
+*.jsonl
+state.json
+trader_state.json
+runtime/
+.DS_Store

@@ -1,0 +1,21 @@
+# BTC 5M data collector (systemd unit template).
+# Edit only the two Environment lines below to match your install.
+# BTC5M_REPO is the checked-out repository; BTC5M_DATA_DIR is the
+# shared data directory used by the collector and the trader.
+[Unit]
+Description=BTC 5M Data Collector
+After=network.target
+
+[Service]
+Type=simple
+Environment=BTC5M_REPO=/opt/polymarket-btc5m-trader
+Environment=BTC5M_DATA_DIR=/var/lib/btc5m-trader/data
+WorkingDirectory=${BTC5M_REPO}/btc5m-collector
+ExecStart=/usr/bin/python3 ${BTC5M_REPO}/btc5m-collector/collect.py
+Restart=always
+RestartSec=5
+StandardOutput=append:${BTC5M_DATA_DIR}/collect.log
+StandardError=append:${BTC5M_DATA_DIR}/collect.log
+
+[Install]
+WantedBy=default.target
